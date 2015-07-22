@@ -1,6 +1,5 @@
 class ControllerBase
   attr_reader :req, :res, :params
-
   # Setup the controller
   def initialize(req, res, route_params = {})
     @req, @res = req, res
@@ -19,8 +18,9 @@ class ControllerBase
     res.status = 302
     res.header['location'] = url
     @already_built_response = true
+    session[:flash] = flash.store
+    session[:authenticity_token] = SecureRandom.urlsafe_base64(16)
     session.store_session(res)
-    flash.store_flash(res)
   end
 
   # Populate the response with content.
@@ -32,10 +32,14 @@ class ControllerBase
     res.body = content
     @already_built_response = true
     session.store_session(res)
-    flash.store_flash(res)
   end
 
   def render(template_name)
+    token = SecureRandom.urlsafe_base64(16)
+    session[:authenticity_token] = token
+    form_auth_token = token
+    session[:flash] = flash.store
+    flash.store = flash.store.merge(flash.now)
     file = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
     erb = ERB.new(file).result(binding)
     render_content(erb, 'text/html')
@@ -47,6 +51,10 @@ class ControllerBase
   end
 
   def invoke_action(name)
+    method = req.request_method.to_s.downcase
+    if method == "post" || method == "patch"
+      raise "Form Authenticity Error!" unless session[:authenticity_token] == params[:authenticity_token]
+    end
     send(name)
   end
 
@@ -54,4 +62,5 @@ class ControllerBase
   def flash
     @flash ||= Flash.new(req)
   end
+
 end
