@@ -1,6 +1,3 @@
-require_relative 'db_connection'
-require_relative '01_sql_object'
-
 module Searchable
   def where(params)
     value_arr = params.values
@@ -9,10 +6,6 @@ module Searchable
     Relation.new(self, options_array)
   end
 
-end
-
-class SQLObject
-  extend Searchable
 end
 
 class Relation
