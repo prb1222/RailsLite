@@ -1,8 +1,9 @@
+require_relative '../lib/aux/auxiliary'
 require 'webrick'
-require_relative '../lib/phase6/controller_base'
-require_relative '../lib/phase6/router'
-
-
+require 'byebug'
+require 'json'
+require 'active_support'
+require 'active_support/core_ext'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
@@ -19,25 +20,26 @@ $statuses = [
   { id: 3, cat_id: 1, text: "Curie is cool!" }
 ]
 
-class StatusesController < Phase6::ControllerBase
+class StatusesController < ControllerBase
   def index
     statuses = $statuses.select do |s|
       s[:cat_id] == Integer(params[:cat_id])
     end
-
     render_content(statuses.to_s, "text/text")
   end
 end
 
-class Cats2Controller < Phase6::ControllerBase
+class CatsController < ControllerBase
   def index
-    render_content($cats.to_s, "text/text")
+    flash[:status] = ["Flash is here!"]
+    @cats = $cats.to_s
+    render :index
   end
 end
 
-router = Phase6::Router.new
+router = Router.new
 router.draw do
-  get Regexp.new("^/cats$"), Cats2Controller, :index
+  get Regexp.new("^/cats$"), CatsController, :index
   get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
 end
 
