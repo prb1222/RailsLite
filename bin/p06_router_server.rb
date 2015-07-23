@@ -1,4 +1,5 @@
 require_relative '../lib/aux/auxiliary'
+require_relative '../lib/activerecord/lib/sql_object'
 require 'webrick'
 require 'byebug'
 require 'json'
@@ -9,17 +10,16 @@ require 'SecureRandom'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
+class Cat < SQLObject
+  self.finalize!
+  belongs_to :human, foreign_key: :owner_id
+end
 
-$cats = [
-  { id: 1, name: "Curie" },
-  { id: 2, name: "Markov" }
-]
-
-$statuses = [
-  { id: 1, cat_id: 1, text: "Curie loves string!" },
-  { id: 2, cat_id: 2, text: "Markov is mighty!" },
-  { id: 3, cat_id: 1, text: "Curie is cool!" }
-]
+class Human < SQLObject
+  self.table_name = 'humans'
+  self.finalize!
+  has_many :cats, foreign_key: :owner_id
+end
 
 class StatusesController < ControllerBase
   def index
@@ -32,7 +32,7 @@ end
 
 class CatsController < ControllerBase
   def index
-    @cats = $cats.to_s
+    @cats = Cat.all
     render :index
   end
 
@@ -51,14 +51,24 @@ class CatsController < ControllerBase
   end
 
   def create
-    @cat = {id: 3, name: "Tibbles", owner: "Annie"}
+    @cat = Cat.new(cat_params)
+    if @cat.save
+      redirect_to "../cats/#{@cat.id}"
+    else
+      flash.now[:errors] = ["Invalid Cat Info!"]
+      render :new
+    end
+  end
+
+  def show
+    @cat = Cat.find(params[:id])
     render :show
   end
 
   private
 
   def cat_params
-    params.require(:cat).permit(:name, :owner)
+    params[:cat]
   end
 end
 
@@ -69,7 +79,7 @@ router.draw do
   get  Regexp.new("^/cats$"), CatsController, :index
   get  Regexp.new("^/cats/new$"), CatsController, :new
   post Regexp.new("^/cats$"), CatsController, :create
-  get  Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
+  get  Regexp.new("^/cats/(?<id>\\d+)$"), CatsController, :show
 end
 
 server = WEBrick::HTTPServer.new(Port: 3000)

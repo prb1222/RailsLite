@@ -1,11 +1,13 @@
+<%= flash[:errors] if flash[:errors]%>
+
 <form action="/cats" method="POST">
   <input type="hidden" name="authenticity_token" value="<%= form_auth_token %>">
   <label>Name
     <input type="text" name="cat[name]" >
   </label>
 
-  <label>Owner
-    <input type="text" name="cat[owner]" >
+  <label>Owner ID
+    <input type="text" name="cat[owner_id]" >
   </label>
 
   <input type="submit">

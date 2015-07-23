@@ -2,6 +2,7 @@ require_relative 'db_connection'
 require 'active_support/inflector'
 require_relative 'searchable'
 require_relative 'associatable'
+require 'byebug'
 # NB: the attr_accessor we wrote in phase 0 is NOT used in the rest
 # of this project. It was only a warm up.
 
@@ -70,7 +71,7 @@ class SQLObject
   end
 
   def self.find(id)
-    row = DBConnection.execute(<<-SQL, id)
+    row = DBConnection.execute(<<-SQL, id.to_i)
       SELECT
         *
       FROM
@@ -86,7 +87,7 @@ class SQLObject
   def initialize(params = {})
     symbols = self.class.columns
     params.each do |attr_name, value|
-      raise "unknown attribute '#{attr_name}'" unless symbols.include?(attr_name)
+      raise "unknown attribute '#{attr_name}'" unless symbols.include?(attr_name.to_sym)
       setter_symbol = "#{attr_name}=".to_sym
       send(setter_symbol, value)
     end
@@ -98,7 +99,6 @@ class SQLObject
 
   def attribute_values
     attributes.values
-
   end
 
   def insert
