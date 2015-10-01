@@ -2,8 +2,8 @@ require 'sqlite3'
 
 # https://tomafro.net/2010/01/tip-relative-paths-with-file-expand-path
 ROOT_FOLDER = File.join(File.dirname(__FILE__), '..')
-CATS_SQL_FILE = File.join(ROOT_FOLDER, 'cats.sql')
-CATS_DB_FILE = File.join(ROOT_FOLDER, 'cats.db')
+CORGIS_SQL_FILE = File.join(ROOT_FOLDER, 'corgis.sql')
+CORGIS_DB_FILE = File.join(ROOT_FOLDER, 'corgis.db')
 
 class DBConnection
   def self.open(db_file_name)
@@ -15,13 +15,13 @@ class DBConnection
   end
 
   def self.reset
-    # commands = [
-    #   "rm '#{CATS_DB_FILE}'",
-    #   "cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'"
-    # ]
+    commands = [
+      "rm '#{CORGIS_DB_FILE}'",
+      "cat '#{CORGIS_SQL_FILE}' | sqlite3 '#{CORGIS_DB_FILE}'"
+    ]
 
-    # commands.each { |command| `#{command}` }
-    DBConnection.open(CATS_DB_FILE)
+    commands.each { |command| `#{command}` }
+    DBConnection.open(CORGIS_DB_FILE)
   end
 
   def self.instance

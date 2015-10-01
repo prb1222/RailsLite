@@ -1,4 +1,4 @@
-CREATE TABLE cats (
+CREATE TABLE corgis (
   id INTEGER PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   owner_id INTEGER,
@@ -28,16 +28,16 @@ VALUES
 INSERT INTO
   humans (id, fname, lname, house_id)
 VALUES
-  (1, "Devon", "Watts", 1),
+  (1, "Peter", "Benavides", 1),
   (2, "Matt", "Rubens", 1),
   (3, "Ned", "Ruggeri", 2),
-  (4, "Catless", "Human", NULL);
+  (4, "Corgiless", "Human", NULL);
 
 INSERT INTO
-  cats (id, name, owner_id)
+  corgis (id, name, owner_id)
 VALUES
-  (1, "Breakfast", 1),
-  (2, "Earl", 2),
-  (3, "Haskell", 3),
-  (4, "Markov", 3),
-  (5, "Stray Cat", NULL);
+  (1, "Goddard", 1),
+  (2, "Maxwell", 2),
+  (3, "Planck", 3),
+  (4, "Haber", 3),
+  (5, "Stray Corgi", NULL);

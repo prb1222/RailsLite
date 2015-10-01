@@ -11,8 +11,8 @@ require 'SecureRandom'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 
-# Creates a Cat model class
-class Cat < SQLObject
+# Creates a Corgi model class
+class Corgi < SQLObject
   self.finalize!
   belongs_to :human, foreign_key: :owner_id
 end
@@ -21,32 +21,23 @@ end
 class Human < SQLObject
   self.table_name = 'humans'
   self.finalize!
-  has_many :cats, foreign_key: :owner_id
+  has_many :corgis, foreign_key: :owner_id
 end
 
 
-class StatusesController < ControllerBase
-  def index
-    statuses = $statuses.select do |s|
-      s[:cat_id] == Integer(params[:cat_id])
-    end
-    render_content(statuses.to_s, "text/text")
-  end
-end
-
-class CatsController < ControllerBase
+class CorgisController < ControllerBase
   def root
     render :root
   end
 
   def index
-    @cats = Cat.all
+    @corgis = Corgi.all
     render :index
   end
 
   def flash_demo
     flash[:status] = ["Flash is here!"]
-    redirect_to '../cats'
+    redirect_to '../corgis'
   end
 
   def flash_now_demo
@@ -59,37 +50,37 @@ class CatsController < ControllerBase
   end
 
   def create
-    @cat = Cat.new(cat_params)
-    if @cat.save
-      redirect_to "../cats/#{@cat.id}"
+    @corgi = Corgi.new(corgi_params)
+    if @corgi.save
+      redirect_to "../corgis/#{@corgi.id}"
     else
-      flash.now[:errors] = ["Invalid Cat Info!"]
+      flash.now[:errors] = ["Invalid Corgi Info!"]
       render :new
     end
   end
 
   def show
-    @cat = Cat.find(params[:id])
+    @corgi = Corgi.find(params[:id])
     render :show
   end
 
   private
 
-  def cat_params
-    params[:cat]
+  def corgi_params
+    params[:corgi]
   end
 end
 
 router = Router.new
 router.draw do
-  get  Regexp.new("^/$"), CatsController, :index
-  get  Regexp.new("^$"), CatsController, :index
-  get  Regexp.new("^/cats/flash$"), CatsController, :flash_demo
-  get  Regexp.new("^/cats/flash_now$"), CatsController, :flash_now_demo
-  get  Regexp.new("^/cats$"), CatsController, :index
-  get  Regexp.new("^/cats/new$"), CatsController, :new
-  post Regexp.new("^/cats$"), CatsController, :create
-  get  Regexp.new("^/cats/(?<id>\\d+)$"), CatsController, :show
+  get  Regexp.new("^/$"), CorgisController, :index
+  get  Regexp.new("^$"), CorgisController, :index
+  get  Regexp.new("^/corgis/flash$"), CorgisController, :flash_demo
+  get  Regexp.new("^/corgis/flash_now$"), CorgisController, :flash_now_demo
+  get  Regexp.new("^/corgis$"), CorgisController, :index
+  get  Regexp.new("^/corgis/new$"), CorgisController, :new
+  post Regexp.new("^/corgis$"), CorgisController, :create
+  get  Regexp.new("^/corgis/(?<id>\\d+)$"), CorgisController, :show
 end
 
 server = WEBrick::HTTPServer.new(Port: 3000)

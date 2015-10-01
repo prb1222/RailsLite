@@ -1,0 +1,11 @@
+<h2><%= @corgi.name %>'s Page</h2>
+
+<p>This is the page for <%= @corgi.name %>. What a cute corgi!</p>
+<br>
+<% if @corgi.human %>
+  <p>This Corgi is owned by <%= @corgi.human.fname + @corgi.human.lname %></p>
+<% else %>
+  <p>This Corgi is not owned by anyone.</p>
+<% end %>
+<br>
+<a href="/corgis">Corgis Index</a>
