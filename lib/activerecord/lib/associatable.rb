@@ -82,7 +82,6 @@ module Associatable
         WHERE
           #{first_table}.id = ?
       SQL
-      byebug
       source_options.class_name.constantize.new(self.class.row_parser(row).first)
     end
   end

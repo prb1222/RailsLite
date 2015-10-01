@@ -10,16 +10,20 @@ require 'SecureRandom'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
+
+# Creates a Cat model class
 class Cat < SQLObject
   self.finalize!
   belongs_to :human, foreign_key: :owner_id
 end
 
+#Creates a Human model class and sets custom table name for db
 class Human < SQLObject
   self.table_name = 'humans'
   self.finalize!
   has_many :cats, foreign_key: :owner_id
 end
+
 
 class StatusesController < ControllerBase
   def index
@@ -31,6 +35,10 @@ class StatusesController < ControllerBase
 end
 
 class CatsController < ControllerBase
+  def root
+    render :root
+  end
+
   def index
     @cats = Cat.all
     render :index
@@ -74,6 +82,8 @@ end
 
 router = Router.new
 router.draw do
+  get  Regexp.new("^/$"), CatsController, :index
+  get  Regexp.new("^$"), CatsController, :index
   get  Regexp.new("^/cats/flash$"), CatsController, :flash_demo
   get  Regexp.new("^/cats/flash_now$"), CatsController, :flash_now_demo
   get  Regexp.new("^/cats$"), CatsController, :index

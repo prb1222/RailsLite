@@ -40,9 +40,11 @@ class ControllerBase
     form_auth_token = token
     session[:flash] = flash.store
     flash.store = flash.store.merge(flash.now)
-    file = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
-    erb = ERB.new(file).result(binding)
-    render_content(erb, 'text/html')
+    content = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
+    content_erb = ERB.new(content).result(binding)
+    main_template = File.read("views/application.html.erb")
+    main_erb = ERB.new(main_template).result(binding)
+    render_content(main_erb, 'text/html')
   end
 
   # method exposing a `Session` object
