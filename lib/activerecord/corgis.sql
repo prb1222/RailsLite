@@ -1,6 +1,7 @@
 CREATE TABLE corgis (
   id INTEGER PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
   owner_id INTEGER,
 
   FOREIGN KEY(owner_id) REFERENCES human(id)
@@ -34,10 +35,10 @@ VALUES
   (4, "Corgiless", "Human", NULL);
 
 INSERT INTO
-  corgis (id, name, owner_id)
+  corgis (id, name, description, owner_id)
 VALUES
-  (1, "Goddard", 1),
-  (2, "Maxwell", 2),
-  (3, "Planck", 3),
-  (4, "Haber", 3),
+  (1, "Goddard", "Father of rocketry." 1),
+  (2, "Maxwell", "Famous for his equations.", 2),
+  (3, "Planck", "Now known for little things.", 3),
+  (4, "Haber", "Feeds billions every day with his process.",3),
   (5, "Stray Corgi", NULL);
