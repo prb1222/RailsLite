@@ -49,13 +49,12 @@ class ControllerBase
 
   # method exposing a `Session` object
   def session
-    @session ||= Session.new(req)
+    $session ||= Session.new(req)
   end
 
   def invoke_action(name)
     method = req.request_method.to_s.downcase
     if method == "post" || method == "patch"
-      byebug
       raise "Form Authenticity Error!" unless session[:authenticity_token] == params[:authenticity_token]
     end
     send(name)
@@ -64,6 +63,14 @@ class ControllerBase
   # method exposing a `Flash` object
   def flash
     @flash ||= Flash.new(req)
+  end
+
+  def current_user
+    puts "\r\r\r\r"
+    puts "Current User: #{@current_user || 'None Yet'}"
+    puts "Current token: #{session[:session_token]}"
+    puts "\r\r\r\r"
+    @current_user ||= Human.find_by({session_token: session[:session_token]})
   end
 
 end

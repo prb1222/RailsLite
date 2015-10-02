@@ -82,6 +82,26 @@ class SQLObject
     self.new(row)
   end
 
+  def self.find_by(search_params)
+    search_arr = []
+    search_params.each do |key, value|
+      search_arr << "#{key} = \'#{value}\'"
+    end
+    search_string = search_arr.join(" AND ")
+
+    rows = DBConnection.execute(<<-SQL)
+      SELECT
+        *
+      FROM
+        #{self.table_name}
+      WHERE
+        #{search_string}
+    SQL
+    return if rows.length == 0
+    row = row_parser(rows).first
+    self.new(row)
+  end
+
   def initialize(params = {})
     symbols = self.class.columns
     params.each do |attr_name, value|
@@ -113,9 +133,11 @@ class SQLObject
   end
 
   def update
+    byebug
     column_names = self.class.columns.drop(1)
     columns_string = column_names.map{|column_name| "#{column_name} = ?"}.join(", ")
-    DBConnection.execute(<<-SQL, *attribute_values.rotate)
+    column_values = column_names.map{|column_name| self.send(column_name)}
+    DBConnection.execute(<<-SQL, column_values, self.id)
       UPDATE
         #{self.class.table_name}
       SET

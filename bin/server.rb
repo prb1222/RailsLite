@@ -50,10 +50,8 @@ class CorgisController < ControllerBase
   end
 
   def create
-    byebug
     @corgi = Corgi.new(corgi_params)
     if @corgi.save
-      puts "GOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HEREGOT TO HERE"
       redirect_to "../corgis/#{@corgi.id}"
     else
       flash.now[:errors] = ["Invalid Corgi Info!"]
@@ -83,8 +81,12 @@ class HumansController < ControllerBase
   end
 
   def create
-    @user = Human.new(user_params)
+    @human = Human.new(human_params)
     if @human.save
+      token = SecureRandom.urlsafe_base64(16)
+      session[:session_token] = token
+      @human.session_token = token
+      @human.save
       redirect_to "../humans/#{@human.id}"
     else
       flash.now[:errors] = ["Invalid User Info!"]
@@ -93,7 +95,7 @@ class HumansController < ControllerBase
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = Human.find(params[:id])
     render :show
   end
 
@@ -102,9 +104,12 @@ class HumansController < ControllerBase
   end
 
   def login
-    @user = Human.find(fname: user_params[:fname], lname: user_params[:lname])
+    @user = Human.find_by({fname: human_params[:fname], lname: human_params[:lname]})
     if @user
-      session[:session_token] = SecureRandom.urlsafe_base64(16)
+      token = SecureRandom.urlsafe_base64(16)
+      session[:session_token] = token
+      @user.session_token = token
+      @user.save
       redirect_to "/"
     else
       flash.now[:errors] = ["Invalid User Info!"]
@@ -119,8 +124,8 @@ class HumansController < ControllerBase
 
   private
 
-  def user_params
-    params[:user]
+  def human_params
+    params[:human]
   end
 end
 

@@ -57,7 +57,7 @@
             <li><a href="/corgis/new">Create a Corgi</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <% if session[:session_token] %>
+            <% if current_user %>
               <li><a href="/humans/<%= current_user.id %>"><%= current_user.fname %></a></li>
               <li><a href="/humans" method="DELETE">Sign Out</a></li>
             <% else %>
