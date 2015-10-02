@@ -133,7 +133,6 @@ class SQLObject
   end
 
   def update
-    byebug
     column_names = self.class.columns.drop(1)
     columns_string = column_names.map{|column_name| "#{column_name} = ?"}.join(", ")
     column_values = column_names.map{|column_name| self.send(column_name)}

@@ -1,11 +1,17 @@
-<h2><%= @corgi.name %>'s Page</h2>
-
-<p>This is the page for <%= @corgi.name %>. What a cute corgi!</p>
-<br>
-<% if @corgi.human %>
-  <p>This Corgi is owned by <%= "#{@corgi.human.fname} #{@corgi.human.lname}" %></p>
-<% else %>
-  <p>This Corgi is not owned by anyone.</p>
-<% end %>
-<br>
-<a href="/corgis">Corgis Index</a>
+<h2 style="text-align:center;margin-bottom:30px;"><%= @corgi.name %>'s Page</h2>
+<div class="container">
+  <div class="corgi-info col-md-6">
+    <p>This is the page for <%= @corgi.name %>. What a cute corgi!</p>
+    <p><%= @corgi.description %></p>
+    <br>
+    <% if @corgi.human %>
+      <p>This Corgi is owned by <%= "#{@corgi.human.fname} #{@corgi.human.lname}" %></p>
+    <% else %>
+      <p>This Corgi is not owned by anyone.</p>
+    <% end %>
+  </div>
+  <div class="corgi-pic col-md-6">
+    <img src="http://placecorgi.com/300/300" />
+  </div>
+  <a href="/corgis">Corgis Index</a>
+</div>

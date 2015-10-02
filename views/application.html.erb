@@ -33,6 +33,11 @@
         padding: 10px;
         padding-left: 50px;
       }
+
+      .icon-img {
+        height: 50px;
+        width: 50px;
+      }
     </style>
   </head>
 
@@ -47,6 +52,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <img class="icon-img" src="http://cdn8.staztic.com/app/a/6197/6197331/corgi-alex-1-l-280x280.png"/>
           <a class="navbar-brand" href="/">Corgi Server</a>
         </div>
 
@@ -59,7 +65,7 @@
           <ul class="nav navbar-nav navbar-right">
             <% if current_user %>
               <li><a href="/humans/<%= current_user.id %>"><%= current_user.fname %></a></li>
-              <li><a href="/humans" method="DELETE">Sign Out</a></li>
+              <li><a href="/humans/logout">Sign Out</a></li>
             <% else %>
               <li><a href="/humans/new">Sign Up</a></li>
               <li><a href="/humans/login">Sign In</a></li>
@@ -70,6 +76,13 @@
     </nav>
 
   <div class="container main-content">
+    <% if !flash.empty? %>
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>">
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
     <%= content_erb %>
   </div>
 

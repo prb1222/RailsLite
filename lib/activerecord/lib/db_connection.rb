@@ -15,12 +15,12 @@ class DBConnection
   end
 
   def self.reset
-    commands = [
-      "rm '#{CORGIS_DB_FILE}'",
-      "cat '#{CORGIS_SQL_FILE}' | sqlite3 '#{CORGIS_DB_FILE}'"
-    ]
-
-    commands.each { |command| `#{command}` }
+    # commands = [
+    #   "rm '#{CORGIS_DB_FILE}'",
+    #   "cat '#{CORGIS_SQL_FILE}' | sqlite3 '#{CORGIS_DB_FILE}'"
+    # ]
+    #
+    # commands.each { |command| `#{command}` }
     DBConnection.open(CORGIS_DB_FILE)
   end
 

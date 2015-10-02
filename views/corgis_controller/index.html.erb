@@ -1,20 +1,14 @@
-<% if flash[:status] %>
-  <div class="alert alert-info">
-    <%= flash[:status].first %>
-  </div>
-<% end %>
-
 <h1>ALL THE CORGIS</h1>
 <ul>
 <%@corgis.each do |corgi|%>
-  <li><a href="corgis/<%= corgi.id %>"><%= corgi.name%></a></li>
+  <li><a href="/corgis/<%= corgi.id %>"><%= corgi.name%></a></li>
 <%end%>
 </ul>
 
 <a href="/corgis/new">New corgi!</a>
 <br>
 <br>
-<a href="./corgis/flash">Flash Page</a>
+<a href="/corgis/flash">Flash Page</a>
 <br>
 <br>
-<a href="./corgis/flash_now">Flash Now Page</a>
+<a href="/corgis/now_flash_demo">Flash Now Page</a>

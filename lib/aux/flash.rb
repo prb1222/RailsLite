@@ -28,4 +28,13 @@ class Flash
   def now
     @flash_now
   end
+
+  def empty?
+    @store.empty? && @flash_now.empty?
+  end
+
+  def each(&blk)
+    @flash_now.each(&blk) unless @flash_now.empty?
+    @store.each(&blk) unless @store.empty?
+  end
 end

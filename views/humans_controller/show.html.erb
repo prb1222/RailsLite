@@ -5,7 +5,7 @@
 <% unless @user.corgis.empty? %>
   <ul>
     <% @user.corgis.each do |corgi| %>
-      <li><a href="/corgis/<%= corgi.id %>"><%= "#{@corgi.name}" %></a></li>
+      <li><a href="/corgis/<%= corgi.id %>"><%= "#{corgi.name}" %></a></li>
     <% end %>
   </ul>
 <% else %>

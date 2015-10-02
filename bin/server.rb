@@ -36,25 +36,32 @@ class CorgisController < ControllerBase
   end
 
   def flash_demo
-    flash[:status] = ["Flash is here!"]
-    redirect_to '../corgis'
+    flash[:info] = "Flash is here! This will persist to a page reload."
+    @corgis = Corgi.all
+    render :index
   end
 
   def flash_now_demo
-    flash.now[:status] = ["Flash now is here!"]
+    flash.now[:info] = "Flash now is here!"
     render :flash_now_demo
   end
 
   def new
-    render :new
+    if logged_in?
+      render :new
+    else
+      flash[:danger] = "Please sign in first!"
+      redirect_to "/humans/login"
+    end
   end
 
   def create
     @corgi = Corgi.new(corgi_params)
+    @corgi.owner_id = current_user.id
     if @corgi.save
       redirect_to "../corgis/#{@corgi.id}"
     else
-      flash.now[:errors] = ["Invalid Corgi Info!"]
+      flash.now[:danger] = "Invalid Corgi Info!"
       render :new
     end
   end
@@ -89,7 +96,7 @@ class HumansController < ControllerBase
       @human.save
       redirect_to "../humans/#{@human.id}"
     else
-      flash.now[:errors] = ["Invalid User Info!"]
+      flash.now[:danger] = "Invalid User Info!"
       render :new
     end
   end
@@ -112,12 +119,14 @@ class HumansController < ControllerBase
       @user.save
       redirect_to "/"
     else
-      flash.now[:errors] = ["Invalid User Info!"]
+      flash.now[:danger] = "Invalid User Info!"
       render :login_page
     end
   end
 
   def logout
+    current_user.session_token = SecureRandom.urlsafe_base64(16)
+    current_user.save
     session[:session_token] = nil
     redirect_to "/"
   end
@@ -136,7 +145,7 @@ router.draw do
   get  Regexp.new("^$"), CorgisController, :index
   get  Regexp.new("^/about$"), CorgisController, :about
   get  Regexp.new("^/corgis/flash$"), CorgisController, :flash_demo
-  get  Regexp.new("^/corgis/flash_now$"), CorgisController, :flash_now_demo
+  get  Regexp.new("^/corgis/now_flash_demo$"), CorgisController, :flash_now_demo
   get  Regexp.new("^/corgis$"), CorgisController, :index
   get  Regexp.new("^/corgis/new$"), CorgisController, :new
   post Regexp.new("^/corgis$"), CorgisController, :create
@@ -147,7 +156,7 @@ router.draw do
   post Regexp.new("^/humans$"), HumansController, :create
   get  Regexp.new("^/humans/login$"), HumansController, :login_page
   post Regexp.new("^/humans/login$"), HumansController, :login
-  delete Regexp.new("^/humans$"), HumansController, :logout
+  get  Regexp.new("^/humans/logout$"), HumansController, :logout
 end
 
 server = WEBrick::HTTPServer.new(Port: 3000)

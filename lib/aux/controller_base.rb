@@ -39,7 +39,7 @@ class ControllerBase
     session[:authenticity_token] = token
     form_auth_token = token
     session[:flash] = flash.store
-    flash.store = flash.store.merge(flash.now)
+    # flash.store = flash.store.merge(flash.now)
     content = File.read("views/#{self.class.to_s.underscore}/#{template_name}.html.erb")
     content_erb = ERB.new(content).result(binding)
     main_template = File.read("views/application.html.erb")
@@ -49,7 +49,7 @@ class ControllerBase
 
   # method exposing a `Session` object
   def session
-    $session ||= Session.new(req)
+    @session ||= Session.new(req)
   end
 
   def invoke_action(name)
@@ -66,11 +66,11 @@ class ControllerBase
   end
 
   def current_user
-    puts "\r\r\r\r"
-    puts "Current User: #{@current_user || 'None Yet'}"
-    puts "Current token: #{session[:session_token]}"
-    puts "\r\r\r\r"
     @current_user ||= Human.find_by({session_token: session[:session_token]})
+  end
+
+  def logged_in?
+    !!current_user
   end
 
 end
