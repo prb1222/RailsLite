@@ -3,34 +3,86 @@
   <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <title>Corgi Server</title>
-
     <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+    <style>
+      .footer {
+        width: 90%;
+        background-color: #eee;
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25px;
+      }
+
+      .footer > * {
+        text-align: center;
+        padding: 5px;
+      }
+
+      .main-content {
+        width: 90%;
+        background-color: #eee;
+        border-radius: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+        padding-left: 50px;
+      }
+    </style>
   </head>
+
   <body>
     <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="..">Corgi Server</a>
-      </div>
-    </div><!-- /.container-fluid -->
-  </nav>
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Corgi Server</a>
+        </div>
 
-  <div class="container">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="/about">About this site</a></li>
+            <li><a href="/corgis/new">Create a Corgi</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if session[:session_token] %>
+              <li><a href="/humans/<%= current_user.id %>"><%= current_user.fname %></a></li>
+              <li><a href="/humans" method="DELETE">Sign Out</a></li>
+            <% else %>
+              <li><a href="/humans/new">Sign Up</a></li>
+              <li><a href="/humans/login">Sign In</a></li>
+            <% end %>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+  <div class="container main-content">
     <%= content_erb %>
+  </div>
+
+  <div class="footer navbar">
+    <div class="author-info col-md-4">
+      Created by: <a href="http://www.peterbenavides.site">Peter Benavides</a>
+    </div>
+    <div class="site-date col-md-4">
+      Created on: 09/20/2015
+    </div>
+    <div class="site-info col-md-4">
+      Check out the docs! <a href="http://www.github.com/prb1222/RailsLite">Source</a>
+    </div>
   </div>
 
   </body>

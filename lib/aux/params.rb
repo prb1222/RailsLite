@@ -13,7 +13,7 @@ class Params
   end
 
   def [](key)
-    @params[key.to_s] || @params[key.to_sym]
+    @params[key.to_sym] || @params[key.to_s]
   end
 
   # this will be useful if we want to `puts params` in the server log
@@ -23,7 +23,7 @@ class Params
 
   class AttributeNotFoundError < ArgumentError; end;
 
-  private
+  # private
   # this should return deeply nested hash
   # argument format
   # user[address][street]=main&user[address][zip]=89436
@@ -48,6 +48,6 @@ class Params
   # this should return an array
   # user[address][street] should return ['user', 'address', 'street']
   def parse_key(key)
-    key.split(/\]\[|\[|\]/)
+    key.split(/\]\[|\[|\]/).map(&:to_sym)
   end
 end

@@ -55,6 +55,7 @@ class ControllerBase
   def invoke_action(name)
     method = req.request_method.to_s.downcase
     if method == "post" || method == "patch"
+      byebug
       raise "Form Authenticity Error!" unless session[:authenticity_token] == params[:authenticity_token]
     end
     send(name)

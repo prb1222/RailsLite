@@ -15,7 +15,7 @@ class Session
   end
 
   def []=(key, val)
-    @cookie[key] = val
+    @cookie[key.to_sym] = val
   end
 
   # serialize the hash into json and save in a cookie

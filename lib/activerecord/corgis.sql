@@ -11,6 +11,7 @@ CREATE TABLE humans (
   id INTEGER PRIMARY KEY,
   fname VARCHAR(255) NOT NULL,
   lname VARCHAR(255) NOT NULL,
+  session_token VARCHAR(255),
   house_id INTEGER,
 
   FOREIGN KEY(house_id) REFERENCES human(id)
@@ -37,8 +38,8 @@ VALUES
 INSERT INTO
   corgis (id, name, description, owner_id)
 VALUES
-  (1, "Goddard", "Father of rocketry." 1),
+  (1, "Goddard", "Father of rocketry.", 1),
   (2, "Maxwell", "Famous for his equations.", 2),
   (3, "Planck", "Now known for little things.", 3),
-  (4, "Haber", "Feeds billions every day with his process.",3),
-  (5, "Stray Corgi", NULL);
+  (4, "Haber", "Feeds billions every day with his process.", 3),
+  (5, "Stray Corgi", "A sad lonely corgi", NULL);

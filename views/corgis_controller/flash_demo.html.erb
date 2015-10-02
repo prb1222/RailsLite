@@ -1,5 +1,5 @@
 <h3>DISPLAYING FLASH</h3>
 
-<div class="alert alert-status">
-  <%= flash[:status] if flash[:status]%>
+<div class="alert alert-info">
+  <%= flash[:status].first if flash[:status]%>
 </div>

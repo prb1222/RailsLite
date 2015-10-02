@@ -1,0 +1,15 @@
+<h2><%= @user.fname %>'s Page</h2>
+
+<p>This is the page for <%= @user.fname %>. What a great owner!</p>
+<br>
+<% unless @user.corgis.empty? %>
+  <ul>
+    <% @user.corgis.each do |corgi| %>
+      <li><a href="/corgis/<%= corgi.id %>"><%= "#{@corgi.name}" %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>This user does not own any corgis.</p>
+<% end %>
+<br>
+<a href="/corgis">Corgis Index</a>
