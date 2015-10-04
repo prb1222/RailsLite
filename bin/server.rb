@@ -1,11 +1,10 @@
 require_relative '../lib/aux/auxiliary'
 require_relative '../lib/activerecord/lib/sql_object'
 require 'webrick'
-require 'byebug'
 require 'json'
 require 'active_support'
 require 'active_support/core_ext'
-require 'SecureRandom'
+require 'securerandom'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
