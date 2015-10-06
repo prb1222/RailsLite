@@ -1,7 +1,7 @@
 # Rails Lite
 [Amazon Web Services link][heroku]
 
-[heroku]: https://enigmatic-sierra-3429.herokuapp.com
+[heroku]: https://corgiserver.site
 
 # Overview
 This is a web application backed by a database inspired by Rails. The server provides RESTful HTTP routes which allow visitors to create cats, view cats, or browse an index of cats. Additionally, some of the basic Rails functionality such as flash and params have been implemented.
@@ -120,4 +120,4 @@ session_token| string    | not null
 
 The humans (users) on the site have a `has_many` relationship with Corgis. The humans are identified only by first and last name, and their sessions are distinguished using the session_token attribute.
 
-The rows in the database are made available to the Ruby controllers using ActiveRecordLite, a custom ORM meant to provide many of the functions of ActiveRecord in Rails. ActiveRecordLite can be found in the lib/activerecord folder. 
+The rows in the database are made available to the Ruby controllers using ActiveRecordLite, a custom ORM meant to provide many of the functions of ActiveRecord in Rails. ActiveRecordLite can be found in the lib/activerecord folder.
