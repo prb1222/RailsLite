@@ -1,7 +1,7 @@
 # Rails Lite
 [Amazon Web Services link][heroku]
 
-[heroku]: https://corgiserver.site
+[heroku]: www.corgiserver.site
 
 # Overview
 This is a web application backed by a database inspired by Rails. The server provides RESTful HTTP routes which allow visitors to create cats, view cats, or browse an index of cats. Additionally, some of the basic Rails functionality such as flash and params have been implemented.
